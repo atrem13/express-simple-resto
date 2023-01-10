@@ -31,7 +31,12 @@ exports.findAll = (req, res, next) => {
     const title = req.body.title;
     let condition = title ? { title: {[Op.like]: `%${title}%`} } : '';
 
-    Menu.findAll({where:condition})
+    Menu.findAll({
+            where:condition,
+            include: [
+                'CategoryMenu'
+            ]
+        })
         .then(data => {
             res.send(data);
         }).catch(err => {
@@ -42,7 +47,11 @@ exports.findAll = (req, res, next) => {
 exports.findOne = (req, res, next) => {
     const id = req.params.id;
 
-    Menu.findByPk(id)
+    Menu.findByPk(id, {
+            include: [
+                'CategoryMenu'
+            ]
+        })
         .then(data => {
             if(data){
                 res.send(data);
@@ -74,14 +83,12 @@ exports.update = (req, res, next) => {
 exports.delete = (req, res, next) => {
     const id = req.params.id;
 
-    Menu.update(req.body, {
+    Menu.destroy({
         where: {id: id},
     })
     .then(data => {
-        if(data == 1){
-            res.send({message: `data updated`});
-        }else{
-            res.status(404).send({message: `cant update data with id ${id}`});
+        if(data){
+            res.send({message: `data deleted`});
         }
     }).catch(err => {
         res.status(500).send({message: err.message});
