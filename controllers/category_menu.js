@@ -1,5 +1,5 @@
 const db = require('../models');
-const Menu = db.menus;
+const CategoryMenu = db.category_menus;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res, next) => {
@@ -9,17 +9,13 @@ exports.create = (req, res, next) => {
     if(!req.body.description){
         return res.status(400).send({message: 'description cant be empty'})
     }
-    if(!req.body.category_menu_id){
-        return res.status(400).send({message: 'category menu cant be empty'})
-    }
 
     const data = {
         name: req.body.name,
         description: req.body.description,
-        category_menu_id: req.body.category_menu_id,
     };
 
-    Menu.create(data)
+    CategoryMenu.create(data)
         .then(data => {
             res.send(data);
         }).catch(err => {
@@ -31,10 +27,10 @@ exports.findAll = (req, res, next) => {
     const name = req.body.name;
     let condition = name ? { name: {[Op.like]: `%${name}%`} } : '';
 
-    Menu.findAll({
+    CategoryMenu.findAll({
             where:condition,
             include: [
-                'CategoryMenu'
+                'Menus'
             ]
         })
         .then(data => {
@@ -47,9 +43,9 @@ exports.findAll = (req, res, next) => {
 exports.findOne = (req, res, next) => {
     const id = req.params.id;
 
-    Menu.findByPk(id, {
+    CategoryMenu.findByPk(id, {
             include: [
-                'CategoryMenu'
+                'Menus'
             ]
         })
         .then(data => {
@@ -66,7 +62,7 @@ exports.findOne = (req, res, next) => {
 exports.update = (req, res, next) => {
     const id = req.params.id;
 
-    Menu.update(req.body, {
+    CategoryMenu.update(req.body, {
         where: {id: id},
     })
     .then(data => {
@@ -83,7 +79,7 @@ exports.update = (req, res, next) => {
 exports.delete = (req, res, next) => {
     const id = req.params.id;
 
-    Menu.destroy({
+    CategoryMenu.destroy({
         where: {id: id},
     })
     .then(data => {
