@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasMany(models.category_menus, {
+      this.belongsTo(models.category_menus, {
         foreignKey: 'category_menu_id',
-        as: 'Menus',
+        as: 'CategoryMenu',
         // onDelete: 'cascade',
         // hooks: true
       });

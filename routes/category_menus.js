@@ -1,17 +1,17 @@
 module.exports = app => {
-    const menus = require('../controllers/category_menus');
+    const category_menus = require('../controllers/category_menus');
 
     var router = require('express').Router();
 
-    router.post("/", menus.create);
+    router.post("/", category_menus.create);
   
-    router.get("/", menus.findAll);
+    router.get("/", category_menus.findAll);
   
-    router.get("/:id", menus.findOne);
+    router.get("/:id", category_menus.findOne);
   
-    router.put("/:id", menus.update);
+    router.put("/:id", category_menus.update);
   
-    router.delete("/:id", menus.delete);
+    router.delete("/:id", category_menus.delete);
   
     app.use('/api/category_menus', router);
 }
