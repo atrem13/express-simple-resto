@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/users', usersRouter);
 require("./routes/category_menus")(app);
 require("./routes/menus")(app);
+require("./routes/cashiers")(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

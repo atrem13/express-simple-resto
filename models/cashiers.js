@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const useBcrypt = require('sequelize-bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class cashiers extends Model {
     /**
@@ -22,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'cashiers',
+  });
+  useBcrypt(cashiers, {
+    field: 'password', // secret field to hash, default: 'password'
+    rounds: 12, // used to generate bcrypt salt, default: 12
+    // compare: 'authenticate', // method used to compare secrets, default: 'authenticate'
   });
   return cashiers;
 };
