@@ -71,7 +71,14 @@ exports.update = (req, res, next) => {
     })
     .then(data => {
         if(data == 1){
-            res.send({message: `data updated`});
+            Menu.findByPk(id, {
+                include: [
+                    'CategoryMenu'
+                ]
+            })
+            .then(data => {
+                res.send(data);
+            })
         }else{
             res.status(404).send({message: `cant update data with id ${id}`});
         }
