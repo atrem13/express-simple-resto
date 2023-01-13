@@ -105,12 +105,27 @@ exports.update = (req, res, next) => {
         data.password = req.body.password;
     }
 
+    // Validate Image
+    if (req.file == undefined) {
+      return res.send(`You must select a file.`);
+    }else{
+        data.img_name = req.file.originalname;
+        data.img_data = fs.readFileSync(
+          __basedir + "/resources/static/assets/uploads/" + req.file.filename
+        );
+    }
+    
+
     Cashier.update(data, {
         where: {id: id},
         individualHooks: true
     })
     .then(data => {
         if(data){
+            fs.writeFileSync(
+              __basedir + "/resources/static/assets/tmp/" + data.img_name,
+              data.img_data
+            );
             res.send(data);
         }else{
             res.status(404).send({message: data});
