@@ -1,9 +1,13 @@
 module.exports = app => {
     const cashiers = require('../controllers/cashiers');
+    const upload = require("../middleware/upload");
 
     var router = require('express').Router();
 
-    router.post("/", cashiers.create);
+    router.post("/", upload.single("file"), cashiers.create);
+    // router.post("/", upload.single( 'file' ), ( req, res, next ) => {
+    //     res.send( req.body ); 
+    // });
   
     router.get("/", cashiers.findAll);
   

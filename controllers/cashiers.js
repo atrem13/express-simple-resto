@@ -1,3 +1,4 @@
+const fs = require("fs");
 const db = require('../models');
 const Cashier = db.cashiers;
 const Op = db.Sequelize.Op;
@@ -26,9 +27,23 @@ exports.create = (req, res, next) => {
         username:req.body.username,
         password:req.body.password,
     };
+    // Validate Image
+    if (req.file == undefined) {
+      return res.send(`You must select a file.`);
+    }
+    
+    data.img_name = req.file.originalname;
+    data.img_data = fs.readFileSync(
+      __basedir + "/resources/static/assets/uploads/" + req.file.filename
+    );
+    res.send(data);
 
     Cashier.create(data)
         .then(data => {
+            fs.writeFileSync(
+              __basedir + "/resources/static/assets/tmp/" + data.img_name,
+              data.img_data
+            );
             res.send(data);
         }).catch(err => {
             res.status(500).send({message: err.message});
