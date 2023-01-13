@@ -36,7 +36,7 @@ exports.create = (req, res, next) => {
     data.img_data = fs.readFileSync(
       __basedir + "/resources/static/assets/uploads/" + req.file.filename
     );
-    res.send(data);
+    // res.send(data);
 
     Cashier.create(data)
         .then(data => {
