@@ -7,11 +7,11 @@ module.exports = app => {
   
     router.get("/", cashiers.findAll);
   
-    // router.get("/:id", cashiers.findOne);
+    router.get("/:id", cashiers.findOne);
   
-    // router.put("/:id", cashiers.update);
+    router.put("/:id", cashiers.update);
   
-    // router.delete("/:id", cashiers.delete);
+    router.delete("/:id", cashiers.delete);
   
     app.use('/api/cashiers', router);
 }

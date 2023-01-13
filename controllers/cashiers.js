@@ -66,17 +66,39 @@ exports.findOne = (req, res, next) => {
 exports.update = (req, res, next) => {
     const id = req.params.id;
 
-    Cashier.update(req.body, {
+    if(!req.body.name){
+        return res.status(400).send({message: 'name cant be empty'});
+    }
+    if(!req.body.phone_number){
+        return res.status(400).send({message: 'phone number cant be empty'});
+    }
+    if(!req.body.address){
+        return res.status(400).send({message: 'address cant be empty'});
+    }
+    if(!req.body.username){
+        return res.status(400).send({message: 'username cant be empty'});
+    }
+
+    const data = {
+        name:req.body.name,
+        phone_number:req.body.phone_number,
+        address:req.body.address,
+        username:req.body.username,
+    };
+
+    if(req.body.password){
+        data.password = req.body.password;
+    }
+
+    Cashier.update(data, {
         where: {id: id},
+        individualHooks: true
     })
     .then(data => {
-        if(data == 1){
-            CategoryMenu.findByPk(id)
-        .then(updateData => {
-                res.send(updateData);
-            })
+        if(data){
+            res.send(data);
         }else{
-            res.status(404).send({message: `cant update data with id ${id}`});
+            res.status(404).send({message: data});
         }
     }).catch(err => {
         res.status(500).send({message: err.message});
