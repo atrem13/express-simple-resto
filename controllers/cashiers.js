@@ -107,21 +107,29 @@ exports.update = (req, res, next) => {
 
     // Validate Image
     if (req.file == undefined) {
-      return res.send(`You must select a file.`);
+        return res.send(`You must select a file.`);
     }else{
         data.img_name = req.file.originalname;
         data.img_data = fs.readFileSync(
           __basedir + "/resources/static/assets/uploads/" + req.file.filename
         );
+        let oldData = Cashier.findByPk(id);
+        const oldPath = __basedir + "/resources/static/assets/uploads/" + oldData.img_name;
+        if (fs.existsSync(oldPath)) {
+          fs.unlink(oldPath, (err) => {
+            if (err) {
+              console.error(err);
+            }
+          });
+        }
     }
-    
 
     Cashier.update(data, {
         where: {id: id},
         individualHooks: true
     })
-    .then(data => {
-        if(data){
+    .then(updatedData => {
+        if(updatedData){
             fs.writeFileSync(
               __basedir + "/resources/static/assets/tmp/" + data.img_name,
               data.img_data

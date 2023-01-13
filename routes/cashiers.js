@@ -13,7 +13,7 @@ module.exports = app => {
   
     router.get("/:id", cashiers.findOne);
   
-    router.put("/:id", cashiers.update);
+    router.put("/:id", upload.single("file"),  cashiers.update);
   
     router.delete("/:id", cashiers.delete);
   
