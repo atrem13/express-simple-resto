@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.TEXT,
     phone_number: DataTypes.STRING,
     username: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    img_name: DataTypes.STRING,
+    img_data: DataTypes.BLOB("long"),
   }, {
     sequelize,
     modelName: 'kitchens',
